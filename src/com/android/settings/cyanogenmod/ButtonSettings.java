@@ -458,7 +458,6 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
                     mDisableNavigationKeys.setEnabled(true);
                 }
             }, 1000);
->>>>>>> cm/cm-11.0
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
