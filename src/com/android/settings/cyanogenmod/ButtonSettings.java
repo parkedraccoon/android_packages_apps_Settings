@@ -442,12 +442,10 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
             mCameraMusicControls.setEnabled(!isCameraWakeEnabled);
             mCameraSleepOnRelease.setEnabled(isCameraWakeEnabled);
             return true;
-<<<<<<< HEAD
         }else if (preference == mTrackballWake) {
             boolean value = mTrackballWake.isChecked();
             Settings.System.putInt(getContentResolver(), Settings.System.TRACKBALL_WAKE_SCREEN, value ? 1 : 0);
             return true;
-=======
         } else if (preference == mDisableNavigationKeys) {
             mDisableNavigationKeys.setEnabled(false);
             writeDisableNavkeysOption(getActivity(), mDisableNavigationKeys.isChecked());
