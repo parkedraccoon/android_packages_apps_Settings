@@ -67,8 +67,8 @@ import android.widget.TextView;
 import com.android.internal.util.ArrayUtils;
 import com.android.settings.ActivityPicker;
 import com.android.settings.accessibility.AccessibilitySettings;
+import com.android.settings.accessibility.CaptionPropertiesFragment;
 import com.android.settings.accessibility.ToggleAccessibilityServicePreferenceFragment;
-import com.android.settings.accessibility.ToggleCaptioningPreferenceFragment;
 import com.android.settings.accounts.AccountSyncSettings;
 import com.android.settings.accounts.AuthenticatorHelper;
 import com.android.settings.accounts.ManageAccountsSettings;
@@ -353,7 +353,7 @@ public class Settings extends PreferenceActivity
         PrivacySettings.class.getName(),
         DeviceAdminSettings.class.getName(),
         AccessibilitySettings.class.getName(),
-        ToggleCaptioningPreferenceFragment.class.getName(),
+        CaptionPropertiesFragment.class.getName(),
         TextToSpeechSettings.class.getName(),
         Memory.class.getName(),
         DevelopmentSettings.class.getName(),
@@ -385,7 +385,8 @@ public class Settings extends PreferenceActivity
         PolicyNativeFragment.class.getName(),
         com.android.settings.cyanogenmod.PrivacySettings.class.getName(),
         com.android.settings.quicksettings.QuickSettingsTiles.class.getName(),
-        com.android.settings.cyanogenmod.QuietHours.class.getName()
+        com.android.settings.cyanogenmod.QuietHours.class.getName(),
+        ThemeSettings.class.getName()
     };
 
     @Override
@@ -653,7 +654,8 @@ public class Settings extends PreferenceActivity
                 } else {
                     // Only show if NFC is on and we have the HCE feature
                     NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
-                    if (!adapter.isEnabled() || !getPackageManager().hasSystemFeature(
+                    if (adapter == null || !adapter.isEnabled()
+                        || !getPackageManager().hasSystemFeature(
                             PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)) {
                         target.remove(i);
                     }
@@ -676,6 +678,10 @@ public class Settings extends PreferenceActivity
                     target.remove(header);
             } else if (id == R.id.voice_wakeup_settings) {
                 if(!Utils.isPackageInstalled(this, VOICE_WAKEUP_PACKAGE_NAME)) {
+                    target.remove(header);
+                }
+            } else if (id == R.id.more_device_settings) {
+                if (!MoreDeviceSettings.hasItems()) {
                     target.remove(header);
                 }
             }
@@ -1144,9 +1150,7 @@ public class Settings extends PreferenceActivity
     public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
         // Override the fragment title for Wallpaper settings
         int titleRes = pref.getTitleRes();
-        if (pref.getFragment().equals(WallpaperTypeSettings.class.getName())) {
-            titleRes = R.string.wallpaper_settings_fragment_title;
-        } else if (pref.getFragment().equals(OwnerInfoSettings.class.getName())
+        if (pref.getFragment().equals(OwnerInfoSettings.class.getName())
                 && UserHandle.myUserId() != UserHandle.USER_OWNER) {
             if (UserManager.get(this).isLinkedUser()) {
                 titleRes = R.string.profile_info_settings_title;
@@ -1255,4 +1259,5 @@ public class Settings extends PreferenceActivity
     public static class SystemSettingsActivity extends Settings { /* empty */ }
     public static class QuickSettingsConfigActivity extends Settings { /* empty */ }
     public static class QuietHoursSettingsActivity extends Settings { /* empty */ }
+    public static class ThemeSettingsActivity extends Settings { /* empty */ }
 }

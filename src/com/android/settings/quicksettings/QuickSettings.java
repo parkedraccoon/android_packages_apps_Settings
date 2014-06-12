@@ -54,6 +54,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private static final String GENERAL_SETTINGS = "pref_general_settings";
     private static final String STATIC_TILES = "static_tiles";
     private static final String DYNAMIC_TILES = "pref_dynamic_tiles";
+    private static final String QS_SMALL_ICONS = "qs_small_icons";
 
     private MultiSelectListPreference mRingMode;
     private ListPreference mNetworkMode;
@@ -92,21 +93,23 @@ public class QuickSettings extends SettingsPreferenceFragment implements
             updatePulldownSummary(quickPulldownValue);
         }
 
-        // Add the sound mode
+        // Add the sound mode (on dual panels preference the preference could be
+        // removed previously so we need to do a null check status)
         mRingMode = (MultiSelectListPreference) prefSet.findPreference(EXP_RING_MODE);
-
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (vibrator.hasVibrator()) {
-            String storedRingMode = Settings.System.getString(resolver,
-                    Settings.System.EXPANDED_RING_MODE);
-            if (storedRingMode != null) {
-                String[] ringModeArray = TextUtils.split(storedRingMode, SEPARATOR);
-                mRingMode.setValues(new HashSet<String>(Arrays.asList(ringModeArray)));
-                updateSummary(storedRingMode, mRingMode, R.string.pref_ring_mode_summary);
+        if (mRingMode != null) {
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibrator.hasVibrator()) {
+                String storedRingMode = Settings.System.getString(resolver,
+                        Settings.System.EXPANDED_RING_MODE);
+                if (storedRingMode != null) {
+                    String[] ringModeArray = TextUtils.split(storedRingMode, SEPARATOR);
+                    mRingMode.setValues(new HashSet<String>(Arrays.asList(ringModeArray)));
+                    updateSummary(storedRingMode, mRingMode, R.string.pref_ring_mode_summary);
+                }
+                mRingMode.setOnPreferenceChangeListener(this);
+            } else {
+                mStaticTiles.removePreference(mRingMode);
             }
-            mRingMode.setOnPreferenceChangeListener(this);
-        } else {
-            mStaticTiles.removePreference(mRingMode);
         }
 
         // Add the network mode preference
