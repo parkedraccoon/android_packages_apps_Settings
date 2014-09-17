@@ -109,6 +109,12 @@
                 android:defaultValue="true" />
 
            <CheckBoxPreference
+                android:key="sunlight_enhancement"
+                android:title="@string/sunlight_enhancement_title"
+                android:summary="@string/sunlight_enhancement_summary"
+                android:defaultValue="true" />
+
+           <CheckBoxPreference
                 android:key="color_enhancement"
                 android:title="@string/color_enhancement_title"
                 android:summary="@string/color_enhancement_summary"
@@ -118,6 +124,12 @@
                 android:key="double_tap_wake_gesture"
                 android:title="@string/double_tap_to_wake_title"
                 android:defaultValue="false" />
+
+            <com.android.settings.cyanogenmod.SystemSettingCheckBoxPreference
+                android:key="proximity_on_wake"
+                android:title="@string/proximity_wake_title"
+                android:summary="@string/proximity_wake_summary"
+                android:defaultValue="true" />
 
             <CheckBoxPreference
                 android:key="wake_when_plugged_or_unplugged"
